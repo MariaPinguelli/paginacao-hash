@@ -7,8 +7,19 @@ tabela = []
 #Variável com endereços fisicos
 memoria = []
 
+tabelaHash = []
+
+def substituirPaginaAleatorio():
+    print("Substituir página aleatório")
+    
+def substituirPaginaSC():
+    print("Substituir página SC")
+
+def hashEndereco():
+    print("funcao hash")
+
 def main():
-    print("aaaaaaa")
+    print("main")
 
 if __name__ == "__main__":
     main()
