@@ -1,7 +1,8 @@
-# import strformat
-#Variáveis globais
-memoriaFisicaPag = 0
+# Imports
+from random import seed, randint
+from sc import paginacaoSC
 
+#Variáveis globais
 #Índice é o endereço virtual, e ao acessar o endereço virtual, conseguimos o índice para acessar a memoria física
 #Variável com espaço de endereços virtuais
 memoriaVirtual = []
@@ -9,23 +10,24 @@ memoriaVirtual = []
 #Variável com endereços fisicos
 memoriaFisica = []
 
-listaProc = []
+# listaProc = []
 
-# def processo(qtdPag, nomeProcesso):
-#     global memoriaFisicaPag
-    
-#     memoriaFisicaPag += qtdPag/4
-    
-#     print("Nome do Processo: " + nomeProcesso)
-#     print("Quantidade de paginas do processo: " + str(qtdPag))
-#     print("Quantidade de paginas da memoria fisica: " + str(memoriaFisicaPag))
+class Processo:
+    def __init__(self, qtdPag):
+        seed()
+        self.id = randint(1000, 9999)
+        self.qtdPag = qtdPag
 
 def main():
-    # processo(12, "Processo aleatorio A")
-    # print("\n")
-    # processo(20, "Processo aleatorio B")
-    print("main")
+    listaProc = []
+    seed()
+    qtdProc = randint(1, 10)
     
+    for i in range(qtdProc):
+        proc = Processo(randint(1, 20))
+        listaProc.append(proc)
+    
+    paginacaoSC(listaProc)
 
 if __name__ == "__main__":
     main()
