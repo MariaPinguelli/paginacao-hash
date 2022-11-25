@@ -9,33 +9,22 @@ memoriaVirtual = []
 #Variável com endereços fisicos
 memoriaFisica = []
 
-tabelaPaginas = []
+listaProc = []
 
-def substituirPaginaAleatorio():
-    print("Substituir pagina aleatorio")
+# def processo(qtdPag, nomeProcesso):
+#     global memoriaFisicaPag
     
-def substituirPaginaSC():
-    print("Substituir pagina SC")
-
-def hashEndereco(indice):
-    enderecoHash = indice%memoriaFisicaPag
-    return enderecoHash
-
-def processo(qtdPag, nomeProcesso):
-    global memoriaFisicaPag
+#     memoriaFisicaPag += qtdPag/4
     
-    memoriaFisicaPag += qtdPag/4
-    
-    print("Nome do Processo: " + nomeProcesso)
-    print("Quantidade de paginas do processo: " + str(qtdPag))
-    print("Quantidade de paginas da memoria fisica: " + str(memoriaFisicaPag))
-    
-    
+#     print("Nome do Processo: " + nomeProcesso)
+#     print("Quantidade de paginas do processo: " + str(qtdPag))
+#     print("Quantidade de paginas da memoria fisica: " + str(memoriaFisicaPag))
 
 def main():
-    processo(12, "Processo aleatorio A")
-    print("\n")
-    processo(20, "Processo aleatorio B")
+    # processo(12, "Processo aleatorio A")
+    # print("\n")
+    # processo(20, "Processo aleatorio B")
+    print("main")
     
 
 if __name__ == "__main__":
