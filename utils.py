@@ -8,7 +8,7 @@ def memoriaFisicaInit(listaProc):
     listaNula = []
     tam = int(contPag(listaProc)/4)
     for i in range(tam):
-        listaNula.append(None)
+        listaNula.append(0)
     return listaNula
 
 def memoriaVirtualInit(listaProc):
@@ -29,6 +29,7 @@ def listaDeAcessoAleatoria(memoriaVirtual):
     listaDeAcesso = []
     
     for i in range(len(memoriaVirtual)):
-        listaDeAcesso.append(randint(0, len(memoriaVirtual)))
-    
+        listaDeAcesso.append(randint(0, len(memoriaVirtual)-1))
+    print(len(memoriaVirtual))
+    print(listaDeAcesso)
     return listaDeAcesso
