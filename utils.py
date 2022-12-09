@@ -1,5 +1,7 @@
-def hashEndereco(indice, memoriaFisicaPag):
-    enderecoHash = indice%memoriaFisicaPag
+from random import seed, randint
+
+def hashEndereco(idPag, memoriaListaPag):
+    enderecoHash = idPag%memoriaListaPag
     return enderecoHash
 
 def memoriaFisicaInit(listaProc):
@@ -21,3 +23,12 @@ def contPag(listaProc):
     for proc in listaProc:
         soma += proc.qtdPag
     return soma
+
+def listaDeAcessoAleatoria(memoriaVirtual):
+    seed()
+    listaDeAcesso = []
+    
+    for i in range(len(memoriaVirtual)):
+        listaDeAcesso.append(randint(0, len(memoriaVirtual)))
+    
+    return listaDeAcesso
