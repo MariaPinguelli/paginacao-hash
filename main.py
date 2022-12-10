@@ -11,8 +11,6 @@ memoriaVirtual = []
 #Variável com endereços fisicos
 memoriaFisica = []
 
-# listaProc = []
-
 class Processo:
     def __init__(self, qtdPag):
         seed()
