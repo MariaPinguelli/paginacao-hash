@@ -1,39 +1,60 @@
 from random import seed, randint
 import numpy as np
-from utils import contPag, memoriaFisicaInit, memoriaVirtualInit
+from utils import contPag, memoriaFisicaInit, memoriaVirtualInit, listaDeAcessoAleatoria
 
 memoriaVirtual = []
 listaAcessos = []
 
-class Pagina: 
-    def __init__(self, proc, nroPag):
+
+class Pagina:
+    def __init__(self, idProc, nroPag):
         seed()
-        self.idProc = proc.id
-        self.id = nroPag
+        self.id = randint(1000, 9999)
+        self.idProc = idProc
+        self.isAloc = False
+
+    def updateAloc(self, isAloc, pos):
+        self.isAloc = isAloc
+        self.posFisica = pos
+
+
+def memoriaVirtualPagAloc(listaProc, memoriaVirtual):
+    x = 0
+    for i in range(len(listaProc)):
+        for j in range(listaProc[i].qtdPag):
+            memoriaVirtual[x] = Pagina(listaProc[i].id, x)
+            x = x+1
+    return memoriaVirtual
 
 
 def paginacaoAleatoria(listaProc):
+    # Inicialização da memória física, virtual e lista de acessos
     memoriaFisica = memoriaFisicaInit(listaProc)
     memoriaVirtual = memoriaVirtualInit(listaProc)
-    print("Mem fisica: " + str(memoriaFisica))
-    print("Mem vir: " + str(memoriaVirtual))
+    memoriaVirtual = memoriaVirtualPagAloc(listaProc, memoriaVirtual)
+    listaDeAcesso = listaDeAcessoAleatoria(memoriaVirtual)
     
-# Cria as páginas referentes ao processo
-def criaPaginas(listaProc):
-    totalPaginas = 0
-    for processo in listaProc:
-        nroPagina = 1
-        for pagina in range(processo.qtdPag):
-            memoriaVirtual = Pagina(processo, nroPagina)
-            nroPagina+1
-            totalPaginas+1
-    gerarListaAcessos(memoriaVirtual, totalPaginas)
+    print('\nTamanho memória física: '+str(len(memoriaVirtual)))
+    
+    index = 0
+    tam = int(abs(contPag(listaProc)/4))
+    print('\n')
+    for i in range(tam):
+        print("Index lista de acessos: "+str(index) +
+              " - Id da pagina: " + str(listaDeAcesso[i].id) +
+              " - Posição memória física: "+str(i))
+        listaDeAcesso[i].updateAloc(True, i)
+        memoriaFisica[i] = listaDeAcesso[i]
+        index += 1
 
-# Cria a lista de acessos que a memória física deve fazer na memória virtual
-def gerarListaAcessos(memoriaVirtual, totalPaginas):
-    print("Mem vir: " + len(memoriaVirtual))
-    # print("Qtde pgs: " + str(totalPaginas))
-    # qtdAcessos = randint(10, totalPaginas)
-    # print("Qtde acessos: " + str(qtdAcessos))
-    # listaAcessos = np.random.choice(memoriaVirtual, qtdAcessos)
-    # print(listaAcessos)
+    while (index < len(listaDeAcesso)):
+        pos = randint(0, len(memoriaFisica))
+        if (listaDeAcesso[index].isAloc == False):
+            listaDeAcesso[pos].updateAloc(True, listaDeAcesso[pos])
+            memoriaVirtual[pos] = listaDeAcesso[index]
+
+        print("Index lista de acessos: "+str(index) +
+              " - Id da pagina: " + str(listaDeAcesso[index].id)+
+              " - Posição memória física: "+str(pos))
+
+        index += 1

@@ -26,10 +26,6 @@ def main():
         proc = Processo(randint(1, 20))
         listaProc.append(proc)
     
-    # for proc in listaProc: 
-    #     print("proc id: " + str(proc.id) + " proc qtdPag: " + str(proc.qtdPag))
-    #     print("\n")
-    
     # paginacaoSC(listaProc)
     paginacaoAleatoria(listaProc)
 

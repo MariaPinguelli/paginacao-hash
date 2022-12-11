@@ -47,7 +47,7 @@ def paginacaoSC(listaProc):
     while(index < len(listaDeAcesso)):
         # print("Memoria Fisica")
         # print(memoriaFisica)
-        print("Index: "+str(index)+" - Id da pagina: "+ str(memoriaFisica[0].id)+" - Bit de Acesso: "+str(memoriaFisica[0].bitAcesso))
+        print("Index lista de acessos: "+str(index)+" - Id da pagina: "+ str(memoriaFisica[0].id)+" - Bit de Acesso: "+str(memoriaFisica[0].bitAcesso))
         if memoriaFisica[0].bitAcesso == 1:
             memoriaFisica[0].updateBit(0)
             listCopy = memoriaFisica
@@ -68,4 +68,3 @@ def paginacaoSC(listaProc):
             memoriaFisica[len(memoriaFisica)-1] = memoriaVirtual[listaDeAcesso[index]]
             
         index += 1
-        
