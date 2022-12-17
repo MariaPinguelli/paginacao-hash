@@ -1,31 +1,38 @@
 # Imports
-from random import seed, randint
-from utils import contPag, memoriaFisicaInit, memoriaVirtualInit, listaDeAcessoAleatoria
+from random import seed, randint, choice
+import utils
 
 class Pagina:
-    def __init__(self, idProc, pos):
+    def __init__(self, id):
         seed()
-        self.id = randint(1000, 9999)
-        self.idProc = idProc
+        self.id = id
+        self.mrIndex = None
         self.isAloc = False
-        self.bitAcesso = 1
-        self.endV = pos
         
-    def updateAloc(self, isAloc, pos):
+    def updateAloc(self, isAloc, mrIndex):
         self.isAloc = isAloc
-        self.posFisica = pos
+        self.mrIndex = mrIndex
+        self.bitAcesso = 1
     
     def updateBit(self, bit):
         self.bitAcesso = bit
 
-def memoriaVirtualPagAloc(listaProc, memoriaVirtual):
-    tamMem = len(memoriaVirtual)
-    
+def verificaIsAloc(idPag, memoriaVirtual):
+    for i in range(utils.tamMemoriaVirtual):
+        if len(memoriaVirtual[i]) > 0:
+            for j in range(len(memoriaVirtual[i])):
+                if memoriaVirtual[i][j].isAloc == idPag & memoriaVirtual[i][j].isAloc:
+                    return True
+    return False
+
+def memoriaVirtualPagAloc(listaDeAcesso, memoriaVirtual):
+    tam = utils.tamMemoriaVirtual
     x = 0
-    for i in range(len(listaProc)):
-        for j in range(listaProc[i].qtdPag):
-            memoriaVirtual[x] = Pagina(listaProc[i].id, x)
-            x = x+1
+    for i in range(tam):
+        for j in range(listaDeAcesso[i].qtdPag):
+            idPag = choice(listaDeAcesso)
+            x = utils.hashEnderecoV2(idPag)
+            memoriaVirtual[x] = Pagina(listaDeAcesso[j].id)
     return memoriaVirtual
 
 def paginacaoSC(listaProc):
