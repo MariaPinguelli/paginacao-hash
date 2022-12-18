@@ -1,12 +1,24 @@
 from random import seed, randint
 import math
 
+# Estrutura dos elementos da memória virtual
+class MemoriaVirtual:
+     def __init__(self, idPagina):
+        seed()
+        self.idPagina = idPagina
+        self.primeiro = None
+
+class MemoriaFisica:
+    def __init__(self, idPagina):
+        seed()
+        self.idPagina = idPagina
+
 tamMemoriaVirtual = 16
 tamMemoriaReal = math.floor(tamMemoriaVirtual/2)
 
-def hashEndereco(idPag, memoriaListaPag):
-    enderecoHash = idPag % memoriaListaPag
-    return enderecoHash
+# def hashEndereco(idPag, memoriaListaPag):
+#     enderecoHash = idPag % memoriaListaPag
+#     return enderecoHash
 
 def hashEnderecoV2(idPag):
     enderecoHash = math.floor(idPag % tamMemoriaVirtual)
@@ -19,6 +31,11 @@ def memoriaFisicaInit(listaProc):
         listaNula.append(0)
     return listaNula
 
+def memoriaFisicaInitV2():
+    memoriaFisica = []
+    for i in range(tamMemoriaReal):
+        memoriaFisica.append(MemoriaFisica(0))
+    print("\nMemoria Física: "+str(memoriaFisica))
 
 def memoriaVirtualInit(listaProc):
     listaNula = []
@@ -26,6 +43,12 @@ def memoriaVirtualInit(listaProc):
     for i in range(tam):
         listaNula.append(None)
     return listaNula
+
+def memoriaVirtualInit2():
+    memoriaVirtual = []
+    for i in range(tamMemoriaVirtual):
+        memoriaVirtual.append(MemoriaVirtual(0))
+    print("\n\nMemória Virtual: "+str(memoriaVirtual)) 
 
 
 def contPag(listaProc):
@@ -35,33 +58,32 @@ def contPag(listaProc):
     return soma
 
 
-def listaDeAcessoAleatoria(memoriaVirtual):
-    seed()
-    listaDeAcesso = []
+# def listaDeAcessoAleatoria(memoriaVirtual):
+#     seed()
+#     listaDeAcesso = []
 
-    tamListaAcessos = math.floor(len(memoriaVirtual)/2)
-    for i in range(tamListaAcessos):
-        # tamListaAcessos = len(memoriaVirtual)-1
-        id = randint(0, tamListaAcessos)
-        # listaDeAcesso.append(randint(0, len(memoriaVirtual)-1))
-        listaDeAcesso.append(memoriaVirtual[id])
-    print("Tamanho da memória virtual: " + str(len(memoriaVirtual)))
-    print("Tamanho da lista de acessos: " + str(len(listaDeAcesso)))
-    print("Lista de acessos: ", end=" ")
-    for j in range(len(listaDeAcesso)):
-        print(listaDeAcesso[j].id, end=" ")
-    return listaDeAcesso
+#     tamListaAcessos = math.floor(len(memoriaVirtual)/2)
+#     for i in range(tamListaAcessos):
+#         # tamListaAcessos = len(memoriaVirtual)-1
+#         id = randint(0, tamListaAcessos)
+#         # listaDeAcesso.append(randint(0, len(memoriaVirtual)-1))
+#         listaDeAcesso.append(memoriaVirtual[id])
+#     print("Tamanho da memória virtual: " + str(len(memoriaVirtual)))
+#     print("Tamanho da lista de acessos: " + str(len(listaDeAcesso)))
+#     print("Lista de acessos: ", end=" ")
+#     for j in range(len(listaDeAcesso)):
+#         print(listaDeAcesso[j].id, end=" ")
+#     return listaDeAcesso
 
 def listaDeAcessoAleatoriaV2():
     seed()
     listaDeAcesso = []
 
-    tamListaAcessos = randint(4, 60)
+    # tamListaAcessos = randint(4, 60)
+    tamListaAcessos = randint(10, 60)
     for i in range(tamListaAcessos):
         id = randint(1000, 9999)
         listaDeAcesso.append(id)
     print("Tamanho da lista de acessos: " + str(len(listaDeAcesso)))
-    print("Lista de acessos: ", end=" ")
-    for j in range(len(listaDeAcesso)):
-        print(listaDeAcesso[j].id, end=" ")
+    print("Lista de acessos: "+str(listaDeAcesso), end=" ")
     return listaDeAcesso

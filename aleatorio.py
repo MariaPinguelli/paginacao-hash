@@ -1,6 +1,6 @@
 from random import seed, randint
 import numpy as np
-from utils import contPag, memoriaFisicaInit, memoriaVirtualInit, listaDeAcessoAleatoria
+import utils
 
 memoriaVirtual = []
 listaAcessos = []
@@ -17,7 +17,6 @@ class Pagina:
         self.isAloc = isAloc
         self.posFisica = pos
 
-
 def memoriaVirtualPagAloc(listaProc, memoriaVirtual):
     x = 0
     for i in range(len(listaProc)):
@@ -28,33 +27,30 @@ def memoriaVirtualPagAloc(listaProc, memoriaVirtual):
 
 
 def paginacaoAleatoria(listaProc):
-    # Inicialização da memória física, virtual e lista de acessos
-    memoriaFisica = memoriaFisicaInit(listaProc)
-    memoriaVirtual = memoriaVirtualInit(listaProc)
-    memoriaVirtual = memoriaVirtualPagAloc(listaProc, memoriaVirtual)
-    listaDeAcesso = listaDeAcessoAleatoria(memoriaVirtual)
-    
-    print('\nTamanho memória física: '+str(len(memoriaVirtual)))
-    
-    index = 0
-    tam = int(abs(contPag(listaProc)/4))
-    print('\n')
-    for i in range(tam):
-        print("Index lista de acessos: "+str(index) +
-              " - Id da pagina: " + str(listaDeAcesso[i].id) +
-              " - Posição memória física: "+str(i))
-        listaDeAcesso[i].updateAloc(True, i)
-        memoriaFisica[i] = listaDeAcesso[i]
-        index += 1
+    listaDeAcesso = utils.listaDeAcessoAleatoriaV2()
+    memoriaVirtual = utils.memoriaVirtualInit2()
+    memoriaFisica = utils.memoriaFisicaInitV2()
 
-    while (index < len(listaDeAcesso)):
-        pos = randint(0, len(memoriaFisica))
-        if (listaDeAcesso[index].isAloc == False):
-            listaDeAcesso[pos].updateAloc(True, listaDeAcesso[pos])
-            memoriaVirtual[pos] = listaDeAcesso[index]
 
-        print("Index lista de acessos: "+str(index) +
-              " - Id da pagina: " + str(listaDeAcesso[index].id)+
-              " - Posição memória física: "+str(pos))
+    # index = 0
+    # tam = int(abs(contPag(listaProc)/4))
+    # print('\n')
+    # for i in range(tam):
+    #     print("Index lista de acessos: "+str(index) +
+    #           " - Id da pagina: " + str(listaDeAcesso[i].id) +
+    #           " - Posição memória física: "+str(i))
+    #     listaDeAcesso[i].updateAloc(True, i)
+    #     memoriaFisica[i] = listaDeAcesso[i]
+    #     index += 1
 
-        index += 1
+    # while (index < len(listaDeAcesso)):
+    #     pos = randint(0, len(memoriaFisica))
+    #     if (listaDeAcesso[index].isAloc == False):
+    #         listaDeAcesso[pos].updateAloc(True, listaDeAcesso[pos])
+    #         memoriaVirtual[pos] = listaDeAcesso[index]
+
+    #     print("Index lista de acessos: "+str(index) +
+    #           " - Id da pagina: " + str(listaDeAcesso[index].id)+
+    #           " - Posição memória física: "+str(pos))
+
+    #     index += 1
