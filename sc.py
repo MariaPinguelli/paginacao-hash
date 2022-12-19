@@ -1,77 +1,102 @@
-# Imports
-from random import seed, randint, choice
 import utils
 
 class Pagina:
-    def __init__(self, id):
-        seed()
-        self.id = id
-        self.mrIndex = None
-        self.isAloc = False
-        
-    def updateAloc(self, isAloc, mrIndex):
-        self.isAloc = isAloc
+    def __init__(self, idPagina, mrIndex):
+        self.idPagina = idPagina
         self.mrIndex = mrIndex
         self.bitAcesso = 1
     
-    def updateBit(self, bit):
-        self.bitAcesso = bit
+    def updateAcesso(self):
+        self.bitAcesso = 0
+    
+    def updateMrIndex(self, mrIndex):
+        self.mrIndex = mrIndex
 
-def verificaIsAloc(idPag, memoriaVirtual):
-    for i in range(utils.tamMemoriaVirtual):
-        if len(memoriaVirtual[i]) > 0:
-            for j in range(len(memoriaVirtual[i])):
-                if memoriaVirtual[i][j].isAloc == idPag & memoriaVirtual[i][j].isAloc:
-                    return True
+def verificaIsAloc(idPag, memoriaReal):
+    if len(memoriaReal) == 0: return False
+    for i in range(len(memoriaReal)):
+        if memoriaReal[i].idPagina is idPag:
+            return True
     return False
 
-def memoriaVirtualPagAloc(listaDeAcesso, memoriaVirtual):
-    tam = utils.tamMemoriaVirtual
-    x = 0
-    for i in range(tam):
-        for j in range(listaDeAcesso[i].qtdPag):
-            idPag = choice(listaDeAcesso)
-            x = utils.hashEnderecoV2(idPag)
-            memoriaVirtual[x] = Pagina(listaDeAcesso[j].id)
-    return memoriaVirtual
+def printAloc(idPag, index, i):
+    print("\n")
+    print("Pagina ------------------------ " + str(idPag))
+    print("Endereco na Memoria Virtual --- " + str(index))
+    print("Endereco na Memoria Real ------ " + str(i))
 
-def paginacaoSC(listaProc):
+def findVirtualIndex(idPag, lista):
+    print("start ---------------------------------------------")
+    print("Looking for: " + str(idPag))
+    print("Lista len: "+ str(len(lista)))
+    for i in range(len(lista)):
+        print("Lista[ "+str(i)+" ] len: "+str(len(lista[i])))
+        if len(lista[i]) > 0:
+            for j in range(len(lista[i])):
+                if lista[i][j].idPagina == idPag:
+                    print("Found: " + str(lista[i][j].idPagina))
+                    print("end ---------------------------------------------")
+                    return [i, j]
+    print("end ---------------------------------------------")
+    return [0, 0]
+
+def runPaginacaoSC():
+    listaDeAcesso = utils.listaDeAcessoAleatoria()
     
-    memoriaFisica = memoriaFisicaInit(listaProc)
-    memoriaVirtual = memoriaVirtualInit(listaProc)
-    memoriaVirtual = memoriaVirtualPagAloc(listaProc, memoriaVirtual)
-    listaDeAcesso = listaDeAcessoAleatoria(memoriaVirtual)
+    mrLen = utils.tamMemoriaReal
+    memoriaVirtual = [[]] * utils.tamMemoriaVirtual
+    memoriaReal = [] * mrLen
     
-    # global index
-    index = 0
-    tam = int(abs(contPag(listaProc)/4))
-    for i in range(tam):
-        memoriaVirtual[listaDeAcesso[i]].updateAloc(True, i)
-        memoriaVirtual[listaDeAcesso[i]].updateBit(1)
-        memoriaFisica[i] = memoriaVirtual[listaDeAcesso[i]]
-        index += 1
+    print("TAM memoriaVirtual: "+str(len(memoriaVirtual)))
+    for k in range(len(memoriaVirtual)):
+        print("memoriaVirtual - pos "+str(k)+" tam "+str(len(memoriaVirtual[k])))  
+    
+    print("ALGORITMO SC - SECOND CHANCE")
+    
+    indice = 0
+    while ((indice < mrLen) & (indice < len(listaDeAcesso))):
+        idPag = listaDeAcesso[indice]
+        if verificaIsAloc(idPag, memoriaReal) is False:
+            index = utils.hashEndereco(idPag)
+            memoriaVirtual[index].append(Pagina(idPag, indice))
+            print("LINHA 62: TAM memoriaVirtual: "+str(len(memoriaVirtual)))
+            for k in range(len(memoriaVirtual)):
+                print("memoriaVirtual - pos "+str(k)+" tam "+str(len(memoriaVirtual[k])))
+            memoriaReal.append(Pagina(idPag, indice))
+            printAloc(idPag, index, indice)
+        indice+=1
         
-    while(index < len(listaDeAcesso)):
-        # print("Memoria Fisica")
-        # print(memoriaFisica)
-        print("Index lista de acessos: "+str(index)+" - Id da pagina: "+ str(memoriaFisica[0].id)+" - Bit de Acesso: "+str(memoriaFisica[0].bitAcesso))
-        if memoriaFisica[0].bitAcesso == 1:
-            memoriaFisica[0].updateBit(0)
-            listCopy = memoriaFisica
-            memoriaFisica[len(memoriaFisica)-1] = listCopy[0]
-            for i in range(len(memoriaFisica)-1):
-                memoriaFisica[i] = listCopy[i+1]
+    print("TAM memoriaVirtual: "+str(len(memoriaVirtual)))
+    for k in range(len(memoriaVirtual)):
+        print("memoriaVirtual - pos "+str(k)+" tam "+str(len(memoriaVirtual[k])))        
+    
+    i = mrLen
+    while i < len(listaDeAcesso):
+        idPag = listaDeAcesso[i]
+        if verificaIsAloc(idPag, memoriaReal) is False:
+            index = utils.hashEndereco(idPag)
+            memoriaVirtual[index].append(Pagina(idPag, i))
+            
+            if memoriaReal[0].bitAcesso == 0:
+                deletePagIndex = findVirtualIndex(memoriaReal[0].idPagina, memoriaVirtual)
+                memoriaVirtual[deletePagIndex[0]].remove(memoriaVirtual[deletePagIndex[0]][deletePagIndex[1]])
                 
-        elif memoriaFisica[0].bitAcesso == 0:
-            memoriaVirtual[memoriaFisica[0].endV].updateAloc(False, None)
-            
-            listCopy = memoriaFisica
-            memoriaFisica[len(memoriaFisica)-1] = listCopy[0]
-            for i in range(len(memoriaFisica)-1):
-                memoriaFisica[i] = listCopy[i]
-            
-            memoriaVirtual[listaDeAcesso[index]].updateAloc(True, index)
-            memoriaVirtual[listaDeAcesso[index]].updateBit(1)
-            memoriaFisica[len(memoriaFisica)-1] = memoriaVirtual[listaDeAcesso[index]]
-            
-        index += 1
+                # Atualizar index alocados
+                for j in range(utils.tamMemoriaReal-1):
+                    auxIndexes = findVirtualIndex(memoriaReal[j].idPagina, memoriaVirtual)
+                    memoriaVirtual[auxIndexes[0]][auxIndexes[1]].updateMrIndex(j)
+                    memoriaReal[j].updateMrIndex(j)
+                
+                memoriaReal.append(Pagina(idPag, len(memoriaReal)-1))
+                printAloc(memoriaReal[len(memoriaReal)-1].idPagina, index, memoriaReal[len(memoriaReal)-1].mrIndex)
+            else:
+                print("SEGUNDA CHANCE PARA A PAGINA: " + str(memoriaReal[0].idPagina))
+                aux = memoriaReal[0]
+                aux.updateAcesso()
+                aux.updateMrIndex(len(memoriaReal)-1)
+                memoriaReal.pop(0)
+                for j in range(utils.tamMemoriaReal-1):
+                    memoriaReal[j].updateMrIndex(j)
+                memoriaReal.append(aux)
+                i-=1
+        i+=1        

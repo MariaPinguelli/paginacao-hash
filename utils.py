@@ -13,14 +13,14 @@ class MemoriaFisica:
         seed()
         self.idPagina = idPagina
 
-tamMemoriaVirtual = 16
+tamMemoriaVirtual = 6
 tamMemoriaReal = math.floor(tamMemoriaVirtual/2)
 
 # def hashEndereco(idPag, memoriaListaPag):
 #     enderecoHash = idPag % memoriaListaPag
 #     return enderecoHash
 
-def hashEnderecoV2(idPag):
+def hashEndereco(idPag):
     enderecoHash = math.floor(idPag % tamMemoriaVirtual)
     return enderecoHash
 
@@ -75,12 +75,12 @@ def contPag(listaProc):
 #         print(listaDeAcesso[j].id, end=" ")
 #     return listaDeAcesso
 
-def listaDeAcessoAleatoriaV2():
+def listaDeAcessoAleatoria():
     seed()
     listaDeAcesso = []
 
     # tamListaAcessos = randint(4, 60)
-    tamListaAcessos = randint(10, 60)
+    tamListaAcessos = randint(1, 10)
     for i in range(tamListaAcessos):
         id = randint(1000, 9999)
         listaDeAcesso.append(id)
