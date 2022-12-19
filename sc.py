@@ -57,7 +57,7 @@ def runPaginacaoSC():
     while ((indice < mrLen) & (indice < len(listaDeAcesso))):
         idPag = listaDeAcesso[indice]
         if verificaIsAloc(idPag, memoriaReal) is False:
-            index = utils.hashEndereco(idPag)
+            index = utils.hashEnderecoV2(idPag)
             memoriaVirtual[index].append(Pagina(idPag, indice))
             print("LINHA 62: TAM memoriaVirtual: "+str(len(memoriaVirtual)))
             for k in range(len(memoriaVirtual)):
@@ -74,7 +74,7 @@ def runPaginacaoSC():
     while i < len(listaDeAcesso):
         idPag = listaDeAcesso[i]
         if verificaIsAloc(idPag, memoriaReal) is False:
-            index = utils.hashEndereco(idPag)
+            index = utils.hashEnderecoV2(idPag)
             memoriaVirtual[index].append(Pagina(idPag, i))
             
             if memoriaReal[0].bitAcesso == 0:

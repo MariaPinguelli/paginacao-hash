@@ -1,7 +1,8 @@
 # Imports
 from random import seed, randint
-from sc import paginacaoSC
+from sc import runPaginacaoSC
 from aleatorio import paginacaoAleatoria
+import secondChance
 
 #Variáveis globais
 #Índice é o endereço virtual, e ao acessar o endereço virtual, conseguimos o índice para acessar a memoria física
@@ -26,8 +27,8 @@ def main():
         proc = Processo(randint(1, 20))
         listaProc.append(proc)
     
-    # paginacaoSC(listaProc)
-    paginacaoAleatoria()
+    secondChance.runPaginacaoSC()
+    # paginacaoAleatoria()
 
 if __name__ == "__main__":
     main()

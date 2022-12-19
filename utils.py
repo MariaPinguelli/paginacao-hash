@@ -12,8 +12,9 @@ class MemoriaFisica:
     def __init__(self, idPagina):
         seed()
         self.idPagina = idPagina
+        self.bitAcesso = 1
 
-tamMemoriaVirtual = 6
+tamMemoriaVirtual = 16
 tamMemoriaReal = math.floor(tamMemoriaVirtual/2)
 
 class Pagina:
@@ -31,7 +32,7 @@ class Pagina:
 #     enderecoHash = idPag % memoriaListaPag
 #     return enderecoHash
 
-def hashEndereco(idPag):
+def hashEnderecoV2(idPag):
     enderecoHash = math.floor(idPag % tamMemoriaVirtual)
     return enderecoHash
 
@@ -41,6 +42,13 @@ def memoriaFisicaInit(listaProc):
     for i in range(tam):
         listaNula.append(0)
     return listaNula
+
+def memoriaFisicaInitSC():
+    memoriaFisica = []
+    for i in range(tamMemoriaReal):
+        memoriaFisica.append(MemoriaFisica(0))
+    # print("\nMemoria Física: "+str(memoriaFisica))
+    return memoriaFisica
 
 def memoriaFisicaInitV2():
     memoriaFisica = []
@@ -70,30 +78,12 @@ def contPag(listaProc):
         soma += proc.qtdPag
     return soma
 
-
-# def listaDeAcessoAleatoria(memoriaVirtual):
-#     seed()
-#     listaDeAcesso = []
-
-#     tamListaAcessos = math.floor(len(memoriaVirtual)/2)
-#     for i in range(tamListaAcessos):
-#         # tamListaAcessos = len(memoriaVirtual)-1
-#         id = randint(0, tamListaAcessos)
-#         # listaDeAcesso.append(randint(0, len(memoriaVirtual)-1))
-#         listaDeAcesso.append(memoriaVirtual[id])
-#     print("Tamanho da memória virtual: " + str(len(memoriaVirtual)))
-#     print("Tamanho da lista de acessos: " + str(len(listaDeAcesso)))
-#     print("Lista de acessos: ", end=" ")
-#     for j in range(len(listaDeAcesso)):
-#         print(listaDeAcesso[j].id, end=" ")
-#     return listaDeAcesso
-
 def listaDeAcessoAleatoria():
     seed()
     listaDeAcesso = []
 
     # tamListaAcessos = randint(4, 60)
-    tamListaAcessos = randint(1, 10)
+    tamListaAcessos = randint(10, 60)
     for i in range(tamListaAcessos):
         id = randint(1000, 9999)
         listaDeAcesso.append(id)
@@ -106,8 +96,8 @@ def listaDeAcessoAleatoriaAleat():
     seed()
     listaDeAcesso = []
 
-    # tamListaAcessos = randint(4, 60)
-    tamListaAcessos = randint(10, 60)
+    # tamListaAcessos = randint(10, 60)
+    tamListaAcessos = randint(10, 20)
     for i in range(tamListaAcessos):
         pag = Pagina()
         listaDeAcesso.append(pag)
