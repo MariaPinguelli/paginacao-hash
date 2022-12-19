@@ -23,22 +23,30 @@ def runPaginacaoSC():
     tamMemFisica = len(memoriaFisica)
     
     while aux < tamListaDeAcesso:
+        print("Aux: "+str(aux))
+        print("Pagina: "+str(listaDeAcesso[aux].id))
         posVirtual = utils.hashEnderecoV2(listaDeAcesso[aux].id)
         alocaMemoriaVirtual(memoriaVirtual, posVirtual, listaDeAcesso[aux])
 
         if (paginasMemFisica >= len(memoriaFisica)):
+            print("Memoria fisica cheia")
+            print
             if(memoriaFisica[0].bitAcesso == 0):
+                print("Exclui a pagina e aloca")
                 pos = freePos(memoriaFisica, memoriaVirtual)
                 # memoriaFisica[0].bitAcesso = 1
                 alocaMemoriaFisica(memoriaFisica, listaDeAcesso[aux], pos)
+                aux += 1
             else:
+                print("Troca")
                 algoritmoSC(memoriaFisica, tamMemFisica)
                 # alocaMemoriaFisica(memoriaFisica, listaDeAcesso[aux], pos)
                 
         else:
+            print("Aloca pagina")
             alocaMemoriaFisica(memoriaFisica, listaDeAcesso[aux], aux)
             paginasMemFisica += 1
-        aux += 1
+            aux += 1
 
         print("\nMemória Física\n")
         for j in range(len(memoriaFisica)):
