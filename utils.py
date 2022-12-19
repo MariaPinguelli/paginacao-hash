@@ -6,7 +6,7 @@ class MemoriaVirtual:
      def __init__(self, idPagina):
         seed()
         self.idPagina = idPagina
-        self.primeiro = None
+        self.paginas = []
 
 class MemoriaFisica:
     def __init__(self, idPagina):
@@ -15,6 +15,17 @@ class MemoriaFisica:
 
 tamMemoriaVirtual = 6
 tamMemoriaReal = math.floor(tamMemoriaVirtual/2)
+
+class Pagina:
+    def __init__(self):
+        seed()
+        self.id = randint(1000, 9999)
+        self.isAloc = False
+
+    def updateAloc(self, isAloc, pos):
+        self.isAloc = isAloc
+        self.posFisica = pos
+
 
 # def hashEndereco(idPag, memoriaListaPag):
 #     enderecoHash = idPag % memoriaListaPag
@@ -35,7 +46,8 @@ def memoriaFisicaInitV2():
     memoriaFisica = []
     for i in range(tamMemoriaReal):
         memoriaFisica.append(MemoriaFisica(0))
-    print("\nMemoria Física: "+str(memoriaFisica))
+    # print("\nMemoria Física: "+str(memoriaFisica))
+    return memoriaFisica
 
 def memoriaVirtualInit(listaProc):
     listaNula = []
@@ -48,7 +60,8 @@ def memoriaVirtualInit2():
     memoriaVirtual = []
     for i in range(tamMemoriaVirtual):
         memoriaVirtual.append(MemoriaVirtual(0))
-    print("\n\nMemória Virtual: "+str(memoriaVirtual)) 
+    # print("\n\nMemória Virtual: "+str(memoriaVirtual)) 
+    return memoriaVirtual
 
 
 def contPag(listaProc):
@@ -86,4 +99,19 @@ def listaDeAcessoAleatoria():
         listaDeAcesso.append(id)
     print("Tamanho da lista de acessos: " + str(len(listaDeAcesso)))
     print("Lista de acessos: "+str(listaDeAcesso), end=" ")
+    return listaDeAcesso
+
+def listaDeAcessoAleatoriaAleat():
+    seed()
+    listaDeAcesso = []
+
+    # tamListaAcessos = randint(4, 60)
+    tamListaAcessos = randint(10, 60)
+    for i in range(tamListaAcessos):
+        pag = Pagina()
+        listaDeAcesso.append(pag)
+    print("Tamanho da lista de acessos: " + str(len(listaDeAcesso)))
+    print("Lista de acessos: ")
+    for i in range(len(listaDeAcesso)):
+        print(str(listaDeAcesso[i].id), end=" ")
     return listaDeAcesso
