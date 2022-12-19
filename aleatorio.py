@@ -1,10 +1,10 @@
 from random import seed, randint
-import numpy as np
 import utils
 
 memoriaVirtual = []
 listaAcessos = []
 paginasMapeadasFisica = 0
+
 
 class Pagina:
     def __init__(self, idProc, nroPag):
@@ -12,17 +12,9 @@ class Pagina:
         self.id = randint(1000, 9999)
         self.isAloc = False
         self.posVirtual = None
+        self.posFisica = None
 
-# def memoriaVirtualPagAloc(listaProc, memoriaVirtual):
-#     x = 0
-#     for i in range(len(listaProc)):
-#         for j in range(listaProc[i].qtdPag):
-#             memoriaVirtual[x] = Pagina(listaProc[i].id, x)
-#             x = x+1
-#     return memoriaVirtual
-
-
-def paginacaoAleatoria(listaProc):
+def paginacaoAleatoria():
     paginasMemFisica = 0
     listaDeAcesso = utils.listaDeAcessoAleatoriaAleat()
     memoriaVirtual = utils.memoriaVirtualInit2()
@@ -31,42 +23,53 @@ def paginacaoAleatoria(listaProc):
     for i in range(len(listaDeAcesso)):
         pos = utils.hashEnderecoV2(listaDeAcesso[i].id)
         alocaMemoriaVirtual(memoriaVirtual, pos, listaDeAcesso[i])
-        alocaMemoriaFisica(memoriaFisica, listaDeAcesso[i], i)
+        if (paginasMemFisica >= len(memoriaFisica)):
+            pos = freePos(memoriaFisica, memoriaVirtual)
+            alocaMemoriaFisica(memoriaFisica, listaDeAcesso[i], pos)
+        else:
+            alocaMemoriaFisica(memoriaFisica, listaDeAcesso[i], i)
+            paginasMemFisica += 1
 
-    print("\n\nMemória Virtual\n")
-    for i in range(len(memoriaVirtual)):
-        print("Posição "+str(i)+"\n")
-        for j in range(len(memoriaVirtual[i].paginas)):
-            print("Página "+str(memoriaVirtual[i].paginas[j].id))
-        print("\n")
+        print("\nMemória Física\n")
+        for j in range(len(memoriaFisica)):
+            print("Pos "+str(j)+" Página: "+str(memoriaFisica[j].idPagina))
+        print('\n')
 
 def alocaMemoriaVirtual(memoriaVirtual, pos, pagina):
     if (pagina.isAloc == False):
-        memoriaVirtual[pos].primeiro = pagina
-        memoriaVirtual[pos].paginas.append(pagina)
+        memoriaVirtual[pos].paginas.append(pagina.id)
         pagina.isAloc = True
         pagina.posVirtual = pos
 
-
 def alocaMemoriaFisica(memoriaFisica, pagina, posFisica):
-    # print("mem fis: "+str(len(memoriaFisica))+"\npaginas mem fisica: "+str(posFisica))
-    tamMemoriaFisica = len(memoriaFisica)
 
-    if (posFisica < tamMemoriaFisica):
-        memoriaFisica[posFisica].idPagina = pagina.id
-    # else:
-    #     pos = randint(0, len(memoriaFisica))
-    #     if(pagina.id != memoriaFisica[pos].idPagina):
-    #         buscaFisica(memoriaFisica, pagina)
-            
-        # buscaVirtual(memoriaVirtual, pagina)
-        
+    memoriaFisica[posFisica].idPagina = pagina.id
+    pagina.posFisica = posFisica
 
-# def buscaFisica(memoriaFisica, pagina):
-    # pos = utils.hashEnderecoV2(pagina.id)
-    # pos = pagina.posVirtual
-    # print
-    # for i in range(len(memoriaVirtual[pos].paginas)):
-    #     if(memoriaVirtual[pos].paginas.id == pagina.id):
-    #         print('wee')
-    #         memoriaVirtual[pos].paginas.id.pop()
+def freePos(memoriaFisica, memoriaVirtual):
+    tamMemFisica = len(memoriaFisica)
+    pos = randint(0, tamMemFisica-1)
+    print("Elemento na memória física:: "+str(memoriaFisica[pos].idPagina))
+    
+    pagina = memoriaFisica[pos]
+    print("Pagina pra remover: "+str(pagina.idPagina))
+    
+    posVirtual = utils.hashEnderecoV2(pagina.idPagina)
+    paginas = memoriaVirtual[posVirtual].paginas
+
+    for j in range(len(paginas)):
+        print('Páginas no array de páginas na memória virtual antes de remover: '+str(paginas[j]))
+
+    for i in range(len(paginas)):
+        if (pagina.idPagina == paginas[i]):
+            pagina.isAloc = False
+            paginas.remove(pagina.idPagina)
+            break
+
+    if(len(paginas) == 0): 
+        print("Não há páginas na estrutura de páginas na posição "+str(pos)+" da memória virtual")
+    else:
+        for i in range(len(paginas)):
+            print('Páginas no array de páginas na memória virtual: '+str(paginas[i]))
+    print('\n')
+    return pos

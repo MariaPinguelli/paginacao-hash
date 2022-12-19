@@ -5,7 +5,7 @@ import math
 class MemoriaVirtual:
      def __init__(self, idPagina):
         seed()
-        self.idPagina = idPagina
+        # self.idPagina = idPagina
         self.paginas = []
 
 class MemoriaFisica:
@@ -98,7 +98,8 @@ def listaDeAcessoAleatoriaV2():
         id = randint(1000, 9999)
         listaDeAcesso.append(id)
     print("Tamanho da lista de acessos: " + str(len(listaDeAcesso)))
-    print("Lista de acessos: "+str(listaDeAcesso), end=" ")
+    print("Lista de acessos "+str(listaDeAcesso))
+    print("\n")
     return listaDeAcesso
 
 def listaDeAcessoAleatoriaAleat():
@@ -114,4 +115,5 @@ def listaDeAcessoAleatoriaAleat():
     print("Lista de acessos: ")
     for i in range(len(listaDeAcesso)):
         print(str(listaDeAcesso[i].id), end=" ")
+    print("\n")
     return listaDeAcesso

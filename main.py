@@ -27,7 +27,7 @@ def main():
         listaProc.append(proc)
     
     # paginacaoSC(listaProc)
-    paginacaoAleatoria(listaProc)
+    paginacaoAleatoria()
 
 if __name__ == "__main__":
     main()
